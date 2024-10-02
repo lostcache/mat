@@ -1,0 +1,6 @@
+max_width = 100
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+reorder_imports = true
+imports_layout = "HorizontalVertical"
+brace_style = "AlwaysNextLine"
