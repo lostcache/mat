@@ -1,9 +1,6 @@
 use std::cell::UnsafeCell;
 
-pub trait Float {}
-
-impl Float for f32 {}
-impl Float for f64 {}
+use crate::float::Float;
 
 #[derive(Debug)]
 pub struct ParRow<T>
