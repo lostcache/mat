@@ -10,6 +10,34 @@ pub struct ParRow<T>
 
 impl<T: Float> ParRow<T>
 {
+    pub fn new(data: Vec<T>) -> Self
+    {
+        ParRow {
+            data: UnsafeCell::new(data),
+        }
+    }
+
+    pub fn new_empty() -> Self
+    {
+        ParRow {
+            data: UnsafeCell::new(vec![]),
+        }
+    }
+
+    pub fn new_with_capacity(capacity: usize) -> Self
+    {
+        ParRow {
+            data: UnsafeCell::new(Vec::with_capacity(capacity)),
+        }
+    }
+
+    pub fn new_with_default(n: usize) -> Self
+    {
+        ParRow {
+            data: UnsafeCell::new(vec![T::default(); n]),
+        }
+    }
+
     pub fn get_mut(&self) -> &mut Vec<T>
     {
         unsafe { &mut *self.data.get() }
@@ -77,5 +105,38 @@ mod row_tests
                 });
             });
         }
+    }
+
+    #[test]
+    fn test_new()
+    {
+        let data: Vec<f32> = vec![1.0, 2.0, 3.0];
+        let row = ParRow::new(data.clone());
+        assert_eq!(*unsafe { &*row.data.get() }, data);
+    }
+
+    #[test]
+    fn test_new_empty()
+    {
+        let row: ParRow<f32> = ParRow::new_empty();
+        assert_eq!(*unsafe { &*row.data.get() }, vec![]);
+    }
+
+    #[test]
+    fn test_new_with_capacity()
+    {
+        let capacity = 10;
+        let row: ParRow<f32> = ParRow::new_with_capacity(capacity);
+        let vec_ref = unsafe { &*row.data.get() };
+        assert_eq!(vec_ref.capacity(), capacity);
+        assert!(vec_ref.is_empty());
+    }
+
+    #[test]
+    fn test_new_with_default()
+    {
+        let n = 5;
+        let row: ParRow<f32> = ParRow::new_with_default(n);
+        assert_eq!(*unsafe { &*row.data.get() }, vec![f32::default(); n]);
     }
 }
