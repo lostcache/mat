@@ -42,6 +42,11 @@ impl<T: Float> ParRow<T>
     {
         unsafe { &mut *self.data.get() }
     }
+
+    pub fn get(&self) -> &Vec<T>
+    {
+        unsafe { &*self.data.get() }
+    }
 }
 
 unsafe impl<T> Send for ParRow<T> {}
@@ -138,5 +143,13 @@ mod row_tests
         let n = 5;
         let row: ParRow<f32> = ParRow::new_with_default(n);
         assert_eq!(*unsafe { &*row.data.get() }, vec![f32::default(); n]);
+    }
+
+    #[test]
+    fn test_get()
+    {
+        let mock_data = ParRow::new(vec![1.0, 2.0, 3.0, 4.0]);
+        let result = mock_data.get();
+        assert_eq!(result, &vec![1.0, 2.0, 3.0, 4.0]);
     }
 }
