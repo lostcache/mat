@@ -1,6 +1,6 @@
 use std::cell::UnsafeCell;
 
-use crate::float::Float;
+use crate::number::Number;
 
 #[derive(Debug)]
 pub struct ParRow<T>
@@ -8,7 +8,7 @@ pub struct ParRow<T>
     data: UnsafeCell<Vec<T>>,
 }
 
-impl<T: Float> ParRow<T>
+impl<T: Number> ParRow<T>
 {
     pub fn new(data: Vec<T>) -> Self
     {
