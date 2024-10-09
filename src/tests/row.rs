@@ -56,7 +56,7 @@ fn row_sharing_in_scoped_threads()
 }
 
 #[test]
-fn test_new()
+fn new()
 {
     let data: Vec<f32> = vec![1.0, 2.0, 3.0];
     let row = ParRow::new(data.clone());
@@ -64,14 +64,14 @@ fn test_new()
 }
 
 #[test]
-fn test_new_empty()
+fn new_empty()
 {
     let row: ParRow<f32> = ParRow::new_empty();
     assert_eq!(*unsafe { &*row.data.get() }, vec![]);
 }
 
 #[test]
-fn test_new_with_capacity()
+fn new_with_capacity()
 {
     let capacity = 10;
     let row: ParRow<f32> = ParRow::new_with_capacity(capacity);
@@ -81,7 +81,7 @@ fn test_new_with_capacity()
 }
 
 #[test]
-fn test_new_with_default()
+fn new_with_default()
 {
     let n = 5;
     let row: ParRow<f32> = ParRow::new_with_default(n);
@@ -89,7 +89,7 @@ fn test_new_with_default()
 }
 
 #[test]
-fn test_get()
+fn get()
 {
     let mock_data = ParRow::new(vec![1.0, 2.0, 3.0, 4.0]);
     let result = mock_data.get();
@@ -97,7 +97,7 @@ fn test_get()
 }
 
 #[test]
-fn test_get_len()
+fn get_len()
 {
     let row = ParRow {
         data: UnsafeCell::new(vec![1, 2, 3, 4, 5]),

@@ -1,7 +1,7 @@
 use crate::mat::Mat;
 
 #[test]
-fn test_mat_new()
+fn mat_new()
 {
     let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
 
@@ -16,7 +16,7 @@ fn test_mat_new()
 }
 
 #[test]
-fn test_send_sync()
+fn send_sync()
 {
     fn assert_send<T: Send>() {}
     fn assert_sync<T: Sync>() {}
@@ -26,7 +26,7 @@ fn test_send_sync()
 }
 
 #[test]
-fn test_mat_new_empty()
+fn mat_new_empty()
 {
     let mat: Mat<i32> = Mat::new(vec![]);
     let data = unsafe { &*mat.rows.get() };
@@ -34,7 +34,7 @@ fn test_mat_new_empty()
 }
 
 #[test]
-fn test_mat_new_single_row()
+fn mat_new_single_row()
 {
     let mat: Mat<i32> = Mat::new(vec![vec![1, 2, 3]]);
     let data = unsafe { &*mat.rows.get() };
@@ -43,7 +43,7 @@ fn test_mat_new_single_row()
 }
 
 #[test]
-fn test_mat_new_multiple_rows()
+fn mat_new_multiple_rows()
 {
     let mat: Mat<i32> = Mat::new(vec![vec![1, 2], vec![3, 4]]);
     let data = unsafe { &*mat.rows.get() };
@@ -53,14 +53,14 @@ fn test_mat_new_multiple_rows()
 }
 
 #[test]
-fn test_check_col_consistency_empty()
+fn check_col_consistency_empty()
 {
     let data: Vec<Vec<i32>> = vec![];
     Mat::check_col_consistency(&data);
 }
 
 #[test]
-fn test_check_col_consistency_consistent()
+fn check_col_consistency_consistent()
 {
     let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
     Mat::check_col_consistency(&data);
@@ -68,7 +68,7 @@ fn test_check_col_consistency_consistent()
 
 #[test]
 #[should_panic(expected = "Inconsistent column length")]
-fn test_check_col_consistency_inconsistent()
+fn check_col_consistency_inconsistent()
 {
     let data = vec![vec![1, 2, 3], vec![4, 5], vec![7, 8, 9]];
     Mat::check_col_consistency(&data);
@@ -81,7 +81,7 @@ fn create_matrix() -> Mat<i32>
 }
 
 #[test]
-fn test_get_row()
+fn get_row()
 {
     let mat = create_matrix();
     let row = mat.get_row(1);
@@ -90,7 +90,7 @@ fn test_get_row()
 }
 
 #[test]
-fn test_get_rows()
+fn get_rows()
 {
     let mat = create_matrix();
     let rows = mat.get_rows();
@@ -101,7 +101,7 @@ fn test_get_rows()
 }
 
 #[test]
-fn test_shape()
+fn shape()
 {
     let mat = create_matrix();
     let shape = mat.shape();
@@ -110,7 +110,7 @@ fn test_shape()
 }
 
 #[test]
-fn test_empty_mat_shape()
+fn empty_mat_shape()
 {
     let mat: Mat<i32> = Mat::new(vec![]);
     let shape = mat.shape();
@@ -118,16 +118,16 @@ fn test_empty_mat_shape()
     assert_eq!(shape, expected_shape);
 }
 
-fn create_test_matrix(data: Vec<Vec<i32>>) -> Mat<i32>
+fn create_matrix_from_data(data: Vec<Vec<i32>>) -> Mat<i32>
 {
     Mat::new(data)
 }
 
 #[test]
-fn test_get_elements_per_thread()
+fn get_elements_per_thread()
 {
     let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-    let mat = create_test_matrix(data);
+    let mat = create_matrix_from_data(data);
 
     // Test with 1 thread
     let elements_per_thread = mat.get_elements_per_thread(1);
@@ -163,10 +163,10 @@ fn test_get_elements_per_thread()
 }
 
 #[test]
-fn test_get_elements_per_thread_empty_matrix()
+fn get_elements_per_thread_empty_matrix()
 {
     let data: Vec<Vec<i32>> = vec![];
-    let mat = create_test_matrix(data);
+    let mat = create_matrix_from_data(data);
 
     // Test with any number of threads for an empty matrix
     let elements_per_thread = mat.get_elements_per_thread(3);
@@ -174,10 +174,10 @@ fn test_get_elements_per_thread_empty_matrix()
 }
 
 #[test]
-fn test_get_elements_per_thread_one_element_matrix()
+fn get_elements_per_thread_one_element_matrix()
 {
     let data = vec![vec![1]];
-    let mat = create_test_matrix(data);
+    let mat = create_matrix_from_data(data);
 
     // Test with 1 thread
     let elements_per_thread = mat.get_elements_per_thread(1);
