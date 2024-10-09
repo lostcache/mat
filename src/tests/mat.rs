@@ -53,3 +53,25 @@ fn test_mat_new_multiple_rows()
     assert_eq!(unsafe { &*data[0].data.get() }, &vec![1, 2]);
     assert_eq!(unsafe { &*data[1].data.get() }, &vec![3, 4]);
 }
+
+#[test]
+fn test_check_col_consistency_empty()
+{
+    let data: Vec<Vec<i32>> = vec![];
+    Mat::check_col_consistency(&data); // should not panic
+}
+
+#[test]
+fn test_check_col_consistency_consistent()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    Mat::check_col_consistency(&data); // should not panic
+}
+
+#[test]
+#[should_panic(expected = "Inconsistent column length")]
+fn test_check_col_consistency_inconsistent()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5], vec![7, 8, 9]];
+    Mat::check_col_consistency(&data); // should panic
+}
