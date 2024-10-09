@@ -117,3 +117,77 @@ fn test_empty_mat_shape()
     let expected_shape = (0, 0);
     assert_eq!(shape, expected_shape);
 }
+
+fn create_test_matrix(data: Vec<Vec<i32>>) -> Mat<i32>
+{
+    Mat::new(data)
+}
+
+#[test]
+fn test_get_elements_per_thread()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let mat = create_test_matrix(data);
+
+    // Test with 1 thread
+    let elements_per_thread = mat.get_elements_per_thread(1);
+    assert_eq!(elements_per_thread, vec![9]);
+
+    // Test with 3 threads
+    let elements_per_thread = mat.get_elements_per_thread(3);
+    assert_eq!(elements_per_thread, vec![3, 3, 3]);
+
+    // Test with 4 threads (more threads than elements)
+    let elements_per_thread = mat.get_elements_per_thread(4);
+    assert_eq!(elements_per_thread, vec![3, 2, 2, 2]);
+
+    // Test with 2 threads
+    let elements_per_thread = mat.get_elements_per_thread(2);
+    assert_eq!(elements_per_thread, vec![5, 4]);
+
+    // Test with 5 threads (more threads than elements)
+    let elements_per_thread = mat.get_elements_per_thread(5);
+    assert_eq!(elements_per_thread, vec![2, 2, 2, 2, 1]);
+
+    // Test with 6 threads (more threads than elements)
+    let elements_per_thread = mat.get_elements_per_thread(6);
+    assert_eq!(elements_per_thread, vec![2, 2, 2, 1, 1, 1]);
+
+    // Test with 9 threads (equal to number of elements)
+    let elements_per_thread = mat.get_elements_per_thread(9);
+    assert_eq!(elements_per_thread, vec![1, 1, 1, 1, 1, 1, 1, 1, 1]);
+
+    // Test with 10 threads (more threads than elements)
+    let elements_per_thread = mat.get_elements_per_thread(10);
+    assert_eq!(elements_per_thread, vec![1, 1, 1, 1, 1, 1, 1, 1, 1, 0]);
+}
+
+#[test]
+fn test_get_elements_per_thread_empty_matrix()
+{
+    let data: Vec<Vec<i32>> = vec![];
+    let mat = create_test_matrix(data);
+
+    // Test with any number of threads for an empty matrix
+    let elements_per_thread = mat.get_elements_per_thread(3);
+    assert_eq!(elements_per_thread, vec![0, 0, 0]);
+}
+
+#[test]
+fn test_get_elements_per_thread_one_element_matrix()
+{
+    let data = vec![vec![1]];
+    let mat = create_test_matrix(data);
+
+    // Test with 1 thread
+    let elements_per_thread = mat.get_elements_per_thread(1);
+    assert_eq!(elements_per_thread, vec![1]);
+
+    // Test with 2 threads (more threads than elements)
+    let elements_per_thread = mat.get_elements_per_thread(2);
+    assert_eq!(elements_per_thread, vec![1, 0]);
+
+    // Test with 3 threads (more threads than elements)
+    let elements_per_thread = mat.get_elements_per_thread(3);
+    assert_eq!(elements_per_thread, vec![1, 0, 0]);
+}

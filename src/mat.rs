@@ -50,6 +50,31 @@ impl<T: Number> Mat<T>
         (rows.len(), rows[0].get().len())
     }
 
+    pub(crate) fn get_elements_per_thread(&self, n_threads: usize) -> Vec<usize>
+    {
+        let (n_rows, n_cols) = self.shape();
+        let n_elements = n_rows * n_cols;
+        let mut elements_per_thread: Vec<usize> = vec![n_elements / n_threads; n_threads];
+
+        if n_elements < n_threads {
+            for i in 0..n_elements {
+                elements_per_thread[i] = 1;
+            }
+            return elements_per_thread;
+        }
+
+        let mut surplus_elements = n_elements % n_threads;
+        for i in 0..n_threads {
+            if surplus_elements == 0 {
+                break;
+            }
+            elements_per_thread[i] += 1;
+            surplus_elements -= 1;
+        }
+
+        elements_per_thread
+    }
+
     pub fn new(data: Vec<Vec<T>>) -> Self
     {
         Self::check_col_consistency(&data);
