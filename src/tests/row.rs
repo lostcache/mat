@@ -95,3 +95,22 @@ fn test_get()
     let result = mock_data.get();
     assert_eq!(result, &vec![1.0, 2.0, 3.0, 4.0]);
 }
+
+#[test]
+fn test_get_len()
+{
+    let row = ParRow {
+        data: UnsafeCell::new(vec![1, 2, 3, 4, 5]),
+    };
+    assert_eq!(row.get_len(), 5);
+
+    let empty_row = ParRow::<i32> {
+        data: UnsafeCell::new(vec![]),
+    };
+    assert_eq!(empty_row.get_len(), 0);
+
+    let single_element_row = ParRow {
+        data: UnsafeCell::new(vec![42]),
+    };
+    assert_eq!(single_element_row.get_len(), 1);
+}

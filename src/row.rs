@@ -47,6 +47,11 @@ impl<T: Number> ParRow<T>
     {
         unsafe { &*self.data.get() }
     }
+
+    pub fn get_len(&self) -> usize
+    {
+        self.get().len()
+    }
 }
 
 unsafe impl<T> Send for ParRow<T> {}
