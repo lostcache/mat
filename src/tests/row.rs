@@ -25,7 +25,7 @@ fn row_sharing_across_threads()
             if i % 2 == 0 {
                 thread::sleep(std::time::Duration::from_millis(50));
             }
-            let unsafe_row = row_ptr.get_mut();
+            let unsafe_row = row_ptr.get_mut_ref();
             unsafe_row.push(i as f64);
         })
     });
@@ -48,7 +48,7 @@ fn row_sharing_in_scoped_threads()
                 if i % 2 == 0 {
                     thread::sleep(std::time::Duration::from_millis(50));
                 }
-                let unsafe_row = row.get_mut();
+                let unsafe_row = row.get_mut_ref();
                 unsafe_row.push(0 as f64);
             });
         });
@@ -72,29 +72,28 @@ fn new_empty()
 }
 
 #[test]
-#[test]
-fn get()
+fn get_ref()
 {
     let mock_data = ParRow::new(vec![1.0, 2.0, 3.0, 4.0]);
-    let result = mock_data.get();
+    let result = unsafe { &*mock_data.data.get() };
     assert_eq!(result, &vec![1.0, 2.0, 3.0, 4.0]);
 }
 
 #[test]
-fn get_len()
+fn len()
 {
     let row = ParRow {
         data: UnsafeCell::new(vec![1, 2, 3, 4, 5]),
     };
-    assert_eq!(row.get_len(), 5);
+    assert_eq!(row.len(), 5);
 
     let empty_row = ParRow::<i32> {
         data: UnsafeCell::new(vec![]),
     };
-    assert_eq!(empty_row.get_len(), 0);
+    assert_eq!(empty_row.len(), 0);
 
     let single_element_row = ParRow {
         data: UnsafeCell::new(vec![42]),
     };
-    assert_eq!(single_element_row.get_len(), 1);
+    assert_eq!(single_element_row.len(), 1);
 }

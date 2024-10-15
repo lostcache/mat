@@ -23,19 +23,20 @@ impl<T: Number> ParRow<T>
         unsafe { &mut *self.data.get() }
     }
 
-    pub fn get_mut(&self) -> &mut Vec<T>
-    {
-        unsafe { &mut *self.data.get() }
-    }
-
-    pub fn get(&self) -> &Vec<T>
+    pub(crate) fn get_ref(&self) -> &Vec<T>
     {
         unsafe { &*self.data.get() }
     }
 
-    pub fn get_len(&self) -> usize
+    pub(crate) fn loc(&self, i: usize) -> &T
     {
-        self.get().len()
+        assert!(i < self.len(), "Index out of bounds");
+        &self.get_ref()[i]
+    }
+
+    pub(crate) fn len(&self) -> usize
+    {
+        self.get_ref().len()
     }
 }
 

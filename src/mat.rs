@@ -31,7 +31,7 @@ impl<T: Number> Mat<T>
     pub(crate) fn get_row(&self, i: usize) -> &Vec<T>
     {
         let rows = self.get_rows();
-        rows[i].get()
+        &*rows[i].get_ref()
     }
 
     pub(crate) fn get_rows(&self) -> &Vec<ParRow<T>>

@@ -26,7 +26,7 @@ fn send_sync()
 }
 
 #[test]
-#[should_panic(expected = "Row in matrix is empty")]
+#[should_panic(expected = "Row in a Matrix cannot be empty")]
 fn mat_new_empty()
 {
     let mat: Mat<i32> = Mat::new(vec![]);
@@ -54,7 +54,7 @@ fn mat_new_multiple_rows()
 }
 
 #[test]
-#[should_panic(expected = "Row in matrix is empty")]
+#[should_panic(expected = "Row in a Matrix cannot be empty")]
 fn check_col_consistency_empty()
 {
     let data: Vec<Vec<i32>> = vec![];
@@ -98,7 +98,7 @@ fn get_rows()
     let rows = mat.get_rows();
     let expected_rows = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
     for i in 0..rows.len() {
-        assert_eq!(rows[i].get(), &expected_rows[i]);
+        assert_eq!(rows[i].get_ref(), &expected_rows[i]);
     }
 }
 
