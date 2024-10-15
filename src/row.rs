@@ -12,30 +12,15 @@ impl<T: Number> ParRow<T>
 {
     pub fn new(data: Vec<T>) -> Self
     {
+        assert!(!data.is_empty(), "Row in a Matrix cannot be empty");
         ParRow {
             data: UnsafeCell::new(data),
         }
     }
 
-    pub fn new_empty() -> Self
+    pub(crate) fn get_mut_ref(&self) -> &mut Vec<T>
     {
-        ParRow {
-            data: UnsafeCell::new(vec![]),
-        }
-    }
-
-    pub fn new_with_capacity(capacity: usize) -> Self
-    {
-        ParRow {
-            data: UnsafeCell::new(Vec::with_capacity(capacity)),
-        }
-    }
-
-    pub fn new_with_default(n: usize) -> Self
-    {
-        ParRow {
-            data: UnsafeCell::new(vec![T::default(); n]),
-        }
+        unsafe { &mut *self.data.get() }
     }
 
     pub fn get_mut(&self) -> &mut Vec<T>

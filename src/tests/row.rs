@@ -1,6 +1,6 @@
 use std::{cell::UnsafeCell, sync::Arc, thread};
 
-use crate::{number::Number, row::ParRow};
+use crate::row::ParRow;
 
 #[test]
 fn row_init()
@@ -64,30 +64,14 @@ fn new()
 }
 
 #[test]
+#[should_panic(expected = "Row in a Matrix cannot be empty")]
 fn new_empty()
 {
-    let row: ParRow<f32> = ParRow::new_empty();
-    assert_eq!(*unsafe { &*row.data.get() }, vec![]);
+    let data: Vec<f32> = vec![];
+    let row = ParRow::new(data);
 }
 
 #[test]
-fn new_with_capacity()
-{
-    let capacity = 10;
-    let row: ParRow<f32> = ParRow::new_with_capacity(capacity);
-    let vec_ref = unsafe { &*row.data.get() };
-    assert_eq!(vec_ref.capacity(), capacity);
-    assert!(vec_ref.is_empty());
-}
-
-#[test]
-fn new_with_default()
-{
-    let n = 5;
-    let row: ParRow<f32> = ParRow::new_with_default(n);
-    assert_eq!(*unsafe { &*row.data.get() }, vec![f32::default(); n]);
-}
-
 #[test]
 fn get()
 {
