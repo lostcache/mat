@@ -97,3 +97,20 @@ fn len()
     };
     assert_eq!(single_element_row.len(), 1);
 }
+
+#[test]
+fn loc_valid_index()
+{
+    let data = vec![1, 2, 3];
+    let row = ParRow::new(data);
+    assert_eq!(row.loc(1), &2);
+}
+
+#[test]
+#[should_panic(expected = "Index out of bounds")]
+fn loc_out_of_bounds()
+{
+    let data = vec![1, 2, 3];
+    let row = ParRow::new(data);
+    row.loc(3);
+}
