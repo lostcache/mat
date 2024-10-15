@@ -32,15 +32,20 @@ impl<T: Number> Mat<T>
         unsafe { &*self.rows.get() }
     }
 
+    pub(crate) fn loc(&self, i: usize, j: usize) -> &T
+    {
+        let (n_rows, n_cols) = self.shape();
+        assert!(i < n_rows, "Index out of bounds");
+        assert!(j < n_cols, "Index out of bounds");
+
+        let row = self.get_row(i);
+        row.loc(j)
+    }
+
     pub fn shape(&self) -> (usize, usize)
     {
         let rows = self.get_rows();
-
-        if rows.is_empty() {
-            return (0, 0);
-        }
-
-        (rows.len(), rows[0].get().len())
+        (rows.len(), rows[0].len())
     }
 
     pub(crate) fn get_elements_per_thread(&self, n_threads: usize) -> Vec<usize>

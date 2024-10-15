@@ -251,3 +251,32 @@ fn test_get_batch_indices_more_threads_than_elements()
         ]
     );
 }
+
+#[test]
+fn test_loc_valid_indices()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let mat = Mat::new(data);
+
+    assert_eq!(mat.loc(0, 0), &1);
+    assert_eq!(mat.loc(1, 1), &5);
+    assert_eq!(mat.loc(2, 2), &9);
+}
+
+#[test]
+#[should_panic(expected = "Index out of bounds")]
+fn test_loc_out_of_bounds_row()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    let mat = Mat::new(data);
+    mat.loc(2, 1);
+}
+
+#[test]
+#[should_panic(expected = "Index out of bounds")]
+fn test_loc_out_of_bounds_col()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    let mat = Mat::new(data);
+    mat.loc(1, 3);
+}
