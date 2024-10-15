@@ -213,3 +213,39 @@ fn get_batch_linear_indices_more_threads_than_elements()
     let result = mat.get_batch_linear_indices(elements_per_thread);
     assert_eq!(result, vec![(0, 0), (1, 1), (2, 2), (2, 2)]);
 }
+
+#[test]
+fn test_get_batch_indices_single_thread()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let mat = Mat::new(data);
+    let indices = mat.get_batch_indices(1);
+    assert_eq!(indices, vec![((0, 0), (2, 2))]);
+}
+
+#[test]
+fn test_get_batch_indices_multiple_threads()
+{
+    let data = vec![vec![1, 2], vec![3, 4], vec![5, 6], vec![7, 8]];
+    let mat = Mat::new(data);
+    let indices = mat.get_batch_indices(2);
+    assert_eq!(indices, vec![((0, 0), (1, 1)), ((2, 0), (3, 1))]);
+}
+
+#[test]
+fn test_get_batch_indices_more_threads_than_elements()
+{
+    let data = vec![vec![1, 2], vec![3, 4]];
+    let mat = Mat::new(data);
+    let indices = mat.get_batch_indices(5);
+    assert_eq!(
+        indices,
+        vec![
+            ((0, 0), (0, 0)),
+            ((0, 1), (0, 1)),
+            ((1, 0), (1, 0)),
+            ((1, 1), (1, 1)),
+            ((1, 1), (1, 1))
+        ]
+    );
+}

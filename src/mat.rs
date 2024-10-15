@@ -95,6 +95,28 @@ impl<T: Number> Mat<T>
         batch_linear_end_indices
     }
 
+    pub(crate) fn get_batch_indices(
+        &self,
+        n_threads: usize,
+    ) -> Vec<((usize, usize), (usize, usize))>
+    {
+        let (_, n_cols) = self.shape();
+        let elements_per_thread = self.get_elements_per_thread(n_threads);
+        let batch_linear_indices = self.get_batch_linear_indices(elements_per_thread);
+        let mut batch_indices: Vec<((usize, usize), (usize, usize))> =
+            vec![((0, 0), (0, 0)); n_threads];
+
+        for i in 0..batch_linear_indices.len() {
+            let (liner_start_index, linear_end_index) = batch_linear_indices[i];
+            let ((start_i, start_j), (end_i, end_j)): ((usize, usize), (usize, usize)) = (
+                (liner_start_index / n_cols, liner_start_index % n_cols),
+                (linear_end_index / n_cols, linear_end_index % n_cols),
+            );
+            batch_indices[i] = ((start_i, start_j), (end_i, end_j));
+        }
+        batch_indices
+    }
+
     pub fn new(data: Vec<Vec<T>>) -> Self
     {
         Self::check_col_consistency(&data);
