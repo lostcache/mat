@@ -28,10 +28,10 @@ impl<T: Number> ParRow<T>
         unsafe { &*self.data.get() }
     }
 
-    pub(crate) fn loc(&self, i: usize) -> &T
+    pub(crate) fn loc(&self, i: usize) -> T
     {
         assert!(i < self.len(), "Index out of bounds");
-        &self.get_ref()[i]
+        self.get_ref()[i]
     }
 
     pub(crate) fn len(&self) -> usize

@@ -32,7 +32,7 @@ impl<T: Number> Mat<T>
         unsafe { &*self.rows.get() }
     }
 
-    pub(crate) fn loc(&self, i: usize, j: usize) -> &T
+    pub(crate) fn loc(&self, i: usize, j: usize) -> T
     {
         let (n_rows, n_cols) = self.shape();
         assert!(i < n_rows, "Index out of bounds");

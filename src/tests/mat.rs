@@ -89,7 +89,7 @@ fn get_row()
     let row = mat.get_row(1);
     let expected_row = vec![4, 5, 6];
     for i in 0..row.len() {
-        assert_eq!(row.loc(i), &expected_row[i]);
+        assert_eq!(row.loc(i), expected_row[i]);
     }
 }
 
@@ -258,9 +258,9 @@ fn test_loc_valid_indices()
     let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
     let mat = Mat::new(data);
 
-    assert_eq!(mat.loc(0, 0), &1);
-    assert_eq!(mat.loc(1, 1), &5);
-    assert_eq!(mat.loc(2, 2), &9);
+    assert_eq!(mat.loc(0, 0), 1);
+    assert_eq!(mat.loc(1, 1), 5);
+    assert_eq!(mat.loc(2, 2), 9);
 }
 
 #[test]

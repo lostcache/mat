@@ -103,7 +103,7 @@ fn loc_valid_index()
 {
     let data = vec![1, 2, 3];
     let row = ParRow::new(data);
-    assert_eq!(row.loc(1), &2);
+    assert_eq!(row.loc(1), 2);
 }
 
 #[test]
