@@ -26,6 +26,7 @@ fn send_sync()
 }
 
 #[test]
+#[should_panic(expected = "Row in matrix is empty")]
 fn mat_new_empty()
 {
     let mat: Mat<i32> = Mat::new(vec![]);
@@ -53,6 +54,7 @@ fn mat_new_multiple_rows()
 }
 
 #[test]
+#[should_panic(expected = "Row in matrix is empty")]
 fn check_col_consistency_empty()
 {
     let data: Vec<Vec<i32>> = vec![];
@@ -109,15 +111,6 @@ fn shape()
     assert_eq!(shape, expected_shape);
 }
 
-#[test]
-fn empty_mat_shape()
-{
-    let mat: Mat<i32> = Mat::new(vec![]);
-    let shape = mat.shape();
-    let expected_shape = (0, 0);
-    assert_eq!(shape, expected_shape);
-}
-
 fn create_matrix_from_data(data: Vec<Vec<i32>>) -> Mat<i32>
 {
     Mat::new(data)
@@ -160,17 +153,6 @@ fn get_elements_per_thread()
     // Test with 10 threads (more threads than elements)
     let elements_per_thread = mat.get_elements_per_thread(10);
     assert_eq!(elements_per_thread, vec![1, 1, 1, 1, 1, 1, 1, 1, 1, 0]);
-}
-
-#[test]
-fn get_elements_per_thread_empty_matrix()
-{
-    let data: Vec<Vec<i32>> = vec![];
-    let mat = create_matrix_from_data(data);
-
-    // Test with any number of threads for an empty matrix
-    let elements_per_thread = mat.get_elements_per_thread(3);
-    assert_eq!(elements_per_thread, vec![0, 0, 0]);
 }
 
 #[test]

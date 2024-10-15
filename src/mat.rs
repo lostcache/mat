@@ -15,7 +15,7 @@ impl<T: Number> Mat<T>
     pub(crate) fn check_col_consistency(rows: &Vec<Vec<T>>)
     {
         if rows.is_empty() {
-            return;
+            panic!("Row in matrix is empty");
         }
 
         let col_len = rows[0].len();
