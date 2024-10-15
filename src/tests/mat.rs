@@ -88,7 +88,9 @@ fn get_row()
     let mat = create_matrix();
     let row = mat.get_row(1);
     let expected_row = vec![4, 5, 6];
-    assert_eq!(row, &expected_row);
+    for i in 0..row.len() {
+        assert_eq!(row.loc(i), &expected_row[i]);
+    }
 }
 
 #[test]

@@ -21,10 +21,10 @@ impl<T: Number> Mat<T>
         }
     }
 
-    pub(crate) fn get_row(&self, i: usize) -> &Vec<T>
+    pub(crate) fn get_row(&self, i: usize) -> &ParRow<T>
     {
         let rows = self.get_rows();
-        &*rows[i].get_ref()
+        &rows[i]
     }
 
     pub(crate) fn get_rows(&self) -> &Vec<ParRow<T>>
