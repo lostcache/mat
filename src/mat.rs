@@ -14,18 +14,11 @@ impl<T: Number> Mat<T>
 {
     pub(crate) fn check_col_consistency(rows: &Vec<Vec<T>>)
     {
-        if rows.is_empty() {
-            panic!("Row in matrix is empty");
-        }
-
+        assert!(!rows.is_empty(), "Row in a Matrix cannot be empty");
         let col_len = rows[0].len();
         for row in rows {
-            if row.len() != col_len {
-                panic!("Inconsistent column length");
-            }
+            assert!(row.len() == col_len, "Inconsistent column length");
         }
-
-        return;
     }
 
     pub(crate) fn get_row(&self, i: usize) -> &Vec<T>
