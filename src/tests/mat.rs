@@ -173,3 +173,43 @@ fn get_elements_per_thread_one_element_matrix()
     let elements_per_thread = mat.get_elements_per_thread(3);
     assert_eq!(elements_per_thread, vec![1, 0, 0]);
 }
+
+#[test]
+fn get_batch_linear_indices_single_thread()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    let mat = create_matrix_from_data(data);
+    let elements_per_thread = vec![6];
+    let result = mat.get_batch_linear_indices(elements_per_thread);
+    assert_eq!(result, vec![(0, 5)]);
+}
+
+#[test]
+fn get_batch_linear_indices_even_distribution()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    let mat = create_matrix_from_data(data);
+    let elements_per_thread = vec![3, 3];
+    let result = mat.get_batch_linear_indices(elements_per_thread);
+    assert_eq!(result, vec![(0, 2), (3, 5)]);
+}
+
+#[test]
+fn get_batch_linear_indices_uneven_distribution()
+{
+    let data = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let mat = create_matrix_from_data(data);
+    let elements_per_thread = vec![4, 4, 1];
+    let result = mat.get_batch_linear_indices(elements_per_thread);
+    assert_eq!(result, vec![(0, 3), (4, 7), (8, 8)]);
+}
+
+#[test]
+fn get_batch_linear_indices_more_threads_than_elements()
+{
+    let data = vec![vec![1, 2, 3]];
+    let mat = create_matrix_from_data(data);
+    let elements_per_thread = vec![1, 1, 1, 0];
+    let result = mat.get_batch_linear_indices(elements_per_thread);
+    assert_eq!(result, vec![(0, 0), (1, 1), (2, 2), (2, 2)]);
+}
