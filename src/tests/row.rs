@@ -114,3 +114,19 @@ fn loc_out_of_bounds()
     let row = ParRow::new(data);
     row.loc(3);
 }
+
+#[test]
+fn test_set_within_bounds()
+{
+    let row = ParRow::new(vec![1, 2, 3]);
+    row.set(1, 4);
+    assert_eq!(row.loc(1), 4);
+}
+
+#[test]
+#[should_panic(expected = "Index out of bounds")]
+fn test_set_out_of_bounds()
+{
+    let row = ParRow::new(vec![1, 2, 3]);
+    row.set(3, 4); // This should panic
+}

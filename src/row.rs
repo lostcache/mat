@@ -38,6 +38,12 @@ impl<T: Number> ParRow<T>
     {
         self.get_ref().len()
     }
+
+    pub(crate) fn set(&self, i: usize, val: T)
+    {
+        assert!(i < self.len(), "Index out of bounds");
+        self.get_mut_ref()[i] = val;
+    }
 }
 
 unsafe impl<T> Send for ParRow<T> {}
