@@ -276,3 +276,22 @@ fn test_loc_out_of_bounds_col()
     let mat = Mat::new(data);
     mat.loc(1, 3);
 }
+#[test]
+fn dot_batch()
+{
+    // Create matrices for testing
+    let mat1 = Mat::new(vec![vec![1, 2, 3], vec![4, 5, 6]]);
+
+    let mat2 = Mat::new(vec![vec![7, 8], vec![9, 10], vec![11, 12]]);
+
+    let result = Mat::new(vec![vec![0; 2]; 2]);
+
+    // Execute the dot_batch operation
+    result.dot_batch(&mat1, &mat2, 0, 0, 1, 1);
+
+    // Verify the results
+    assert_eq!(result.loc(0, 0), 58);
+    assert_eq!(result.loc(0, 1), 64);
+    assert_eq!(result.loc(1, 0), 139);
+    assert_eq!(result.loc(1, 1), 154);
+}
