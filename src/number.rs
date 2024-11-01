@@ -1,4 +1,9 @@
-pub trait Number: Default + Clone {}
+use std::ops::{Add, AddAssign, Mul};
+
+pub trait Number:
+    Default + Clone + Copy + Add<Output = Self> + Mul<Output = Self> + AddAssign
+{
+}
 
 impl Number for f32 {}
 

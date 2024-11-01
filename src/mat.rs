@@ -2,6 +2,7 @@ use std::cell::UnsafeCell;
 
 use crate::{number::Number, row::ParRow};
 
+#[derive(Debug)]
 pub struct Mat<T>
 {
     pub(crate) rows: UnsafeCell<Vec<ParRow<T>>>,
@@ -10,7 +11,7 @@ pub struct Mat<T>
 unsafe impl<T> Send for Mat<T> {}
 unsafe impl<T> Sync for Mat<T> {}
 
-impl<T: Number> Mat<T>
+impl<T: Number + std::fmt::Debug> Mat<T>
 {
     pub(crate) fn check_col_consistency(rows: &Vec<Vec<T>>)
     {
@@ -126,6 +127,28 @@ impl<T: Number> Mat<T>
 
         Mat {
             rows: UnsafeCell::new(rows),
+        }
+    }
+
+    pub(crate) fn dot_batch(
+        &self,
+        mat1: &Mat<T>,
+        mat2: &Mat<T>,
+        start_i: usize,
+        start_j: usize,
+        end_i: usize,
+        end_j: usize,
+    )
+    {
+        let (n_rows, n_cols) = mat1.shape();
+        for i in start_i..=end_i {
+            for j in start_j..=end_j {
+                let mut sum = T::default();
+                for k in 0..n_cols {
+                    sum += mat1.loc(i, k) * mat2.loc(k, j);
+                }
+                self.get_row(i).set(j, sum);
+            }
         }
     }
 }
