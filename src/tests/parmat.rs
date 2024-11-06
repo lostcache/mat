@@ -94,3 +94,40 @@ fn validate_vec_inconsistent_cols()
     let vec = vec![vec![1, 2], vec![3, 4, 5]];
     ParMat::validate_vec(&vec);
 }
+
+#[test]
+fn test_matrix_from()
+{
+    let vec = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    let mut matrix = ParMat::from(vec.clone());
+
+    assert_eq!(*matrix.rows.get_mut(), vec);
+}
+
+#[test]
+#[should_panic(expected = "Cannot init empty mat")]
+fn test_matrix_from_empty()
+{
+    let vec: Vec<Vec<i32>> = Vec::new();
+    let mut matrix = ParMat::from(vec.clone());
+
+    assert_eq!(*matrix.rows.get_mut(), vec);
+}
+
+#[test]
+#[should_panic(expected = "Cannot init empty mat")]
+fn matrix_from_empty_col()
+{
+    let vec: Vec<Vec<i32>> = vec![vec![]];
+    let mut matrix = ParMat::from(vec.clone());
+
+    assert_eq!(*matrix.rows.get_mut(), vec);
+}
+
+#[test]
+#[should_panic(expected = "Inconsistant col size")]
+fn test_matrix_from_invalid()
+{
+    let vec = vec![vec![1, 2], vec![3]];
+    ParMat::from(vec); // Assuming validate_vec will panic on invalid input
+}
