@@ -138,7 +138,6 @@ impl<T: Number + 'static> ParMat<T>
     )
     {
         let (n_rows, n_cols) = mat1.shape();
-        println!("batch info -> {} {} {} {}", start_i, start_j, end_i, end_j);
         for i in start_i..=end_i {
             for j in start_j..=end_j {
                 let mut sum = T::default();
