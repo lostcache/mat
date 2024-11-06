@@ -1,7 +1,7 @@
 use std::ops::{Add, AddAssign, Mul};
 
 pub trait Number:
-    Default + Clone + Copy + Add<Output = Self> + Mul<Output = Self> + AddAssign + Send + Sync
+    Default + Clone + Copy + Add<Output = Self> + Mul<Output = Self> + AddAssign + Send + Sync + 'static
 {
 }
 

@@ -8,7 +8,7 @@ pub(crate) struct ParMat<T: Number>
 unsafe impl<T: Number> Sync for ParMat<T> {}
 unsafe impl<T: Number> Send for ParMat<T> {}
 
-impl<T: Number + 'static> ParMat<T>
+impl<T: Number> ParMat<T>
 {
     pub(crate) fn validate_vec(vec: &Vec<Vec<T>>)
     {
