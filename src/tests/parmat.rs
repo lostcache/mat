@@ -1,7 +1,7 @@
 use crate::parmat::ParMat;
 
 #[test]
-fn test_dot_product()
+fn dot_product()
 {
     let mat1_data = vec![vec![(1), (2)], vec![(3), (4)]];
     let mat2_data = vec![vec![(2), (0)], vec![(1), (2)]];
@@ -53,7 +53,7 @@ fn test_dot_product()
 
 #[test]
 #[should_panic(expected = "Matrix dimensions do not match for dot product")]
-fn test_dot_product_dimension_mismatch()
+fn dot_product_dimension_mismatch()
 {
     let mat1_data = vec![vec![(1), (2)], vec![(3), (4)]];
     let mat2_data = vec![vec![(2), (0)]];
@@ -62,4 +62,35 @@ fn test_dot_product_dimension_mismatch()
     let mat2 = ParMat::from(mat2_data);
 
     ParMat::dot(&mat1, &mat2);
+}
+
+#[test]
+fn validate_vec_non_empty()
+{
+    let vec = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    ParMat::validate_vec(&vec);
+}
+
+#[test]
+#[should_panic(expected = "Cannot init empty mat")]
+fn validate_vec_empty_outer()
+{
+    let vec: Vec<Vec<i32>> = Vec::new();
+    ParMat::validate_vec(&vec);
+}
+
+#[test]
+#[should_panic(expected = "Cannot init empty mat")]
+fn validate_vec_empty_inner()
+{
+    let vec: Vec<Vec<i32>> = vec![Vec::new()];
+    ParMat::validate_vec(&vec);
+}
+
+#[test]
+#[should_panic(expected = "Inconsistant col size")]
+fn validate_vec_inconsistent_cols()
+{
+    let vec = vec![vec![1, 2], vec![3, 4, 5]];
+    ParMat::validate_vec(&vec);
 }

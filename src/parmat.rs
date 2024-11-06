@@ -10,7 +10,7 @@ unsafe impl<T: Number> Send for ParMat<T> {}
 
 impl<T: Number + 'static> ParMat<T>
 {
-    fn validate_vec(vec: &Vec<Vec<T>>)
+    pub(crate) fn validate_vec(vec: &Vec<Vec<T>>)
     {
         assert!(vec.len() != 0, "Cannot init empty mat");
         let cols = vec[0].len();
